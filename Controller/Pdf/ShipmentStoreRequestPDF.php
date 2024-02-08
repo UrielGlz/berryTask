@@ -1,0 +1,197 @@
+<?php  
+class ShipmentStoreRequestPDF {
+    private $pathfFileCreated = null; 
+    public function __construct($idShipment,$createFile = null) {
+        $shipment = new ShipmentStoreRequestRepository();
+        $shipmentData = $shipment->getById($idShipment);
+        $shipment->setOptions($shipmentData);
+        $shipment->setId($idShipment);
+        
+        $empresa = new CompanyRepository();
+        $empresa->setOptions($empresa->getById(1));        
+        
+        //Modifique metodo AddPage para qe ricibiera un tercer parametro, dicho parametro contiene el texto para a marca de agua.
+        // para crear la marca de agua agregue las funciones Header y RotatedText en pdf.php 
+        $pdf = new PDF();
+        
+        $detalles = $shipment->getShipmentDetailsSaved($idShipment,true);
+        $totalEnviado = 0;
+        foreach($detalles as $detalle){      
+            $totalEnviado += $detalle['quantity'];        
+        }
+        $etiquetas = ceil($totalEnviado/20);
+        //Yo cambie la variable $reptir ya no se ocupa solo quieren una sola hoja.
+        //@andres el dia Nov/29/2022
+        for($repetir = 1; $repetir <= 1; $repetir++){            
+             if($shipment->getStatus() == '4'){
+                $pdf->AddPage('','',0,'Cancelado');
+            }else{
+                $pdf->AddPage('','');
+            }
+            
+            //$pdf->Image(ROOT."/public/img/logo.png",10,10,80,0);
+            //$pdf->Image(ROOT."/public/img/logo.png",170,275,30,0);
+
+            $pdf->SetTextColor(0); 
+            $y = $pdf->GetY();
+            $pdf->SetFont('Arial','B','36');
+            $pdf->Cell(95,20,strtoupper($shipmentData['to_store_name']), '0', 1, 'C');        
+            $pdf->SetFont('Arial','B','12');
+            $pdf->Cell(95,5, "FECHA DE ENTREGA: ".$shipmentData['deliveryDateFormated'], '0', 1, 'C');  
+            //$pdf->SetFont('Arial','B','12');        
+            //$pdf->Cell(95,5, "FECHA DE ENVIO: ".$shipmentData['dateFormated'], '0', 1, 'C');    
+
+            $pdf->SetY($y);
+            $pdf->SetFont('Arial','','10');
+            $pdf->Cell(95,5, "", '0', 0, 'C'); /*Margin left*/
+            $pdf->Cell(95,5, "ENVIO", '0', 1, 'R'); 
+            $pdf->Cell(95,5, "", '0', 0, 'C'); /*Margin left*/
+            $pdf->SetFont('Arial','B','16');
+            $pdf->Cell(95,5, '#'.$idShipment, '0', 1, 'R');       
+            
+            //Me pidio Claudia que lo quitara. Andres.
+            //$pdf->Ln(2);
+            //$pdf->SetFont('Arial','','10');
+            //$pdf->Cell(95,5, "", '0', 0, 'C'); /*Margin left*/
+            //$pdf->Cell(95,5, "ETIQUETA", '0', 1, 'R'); 
+            //$pdf->Cell(95,5, "", '0', 0, 'C'); /*Margin left*/
+            //$pdf->SetFont('Arial','B','30');
+            //$pdf->Cell(95,15, $repetir.' de '.$etiquetas, '0', 1, 'R');   
+
+            /*
+            $barCode = new BarCode();
+            $barCode->setBarCode(array(
+                'filepath'=>PATH_TEMP_DOCS.'/barcodes/'.$shipment->getNumShipment().'.png',
+                'text'=>$shipment->getNumShipment(),
+                'print'=>false));       
+            $pdf->Image(PATH_TEMP_DOCS.'barcodes/'.$shipment->getNumShipment().'.png',158,15,40,0);
+
+            $pdf->SetFont('Arial','','8');                
+            $pdf->Cell(150, 6, '', '', 0, 'R'); 
+            $pdf->Cell(36, 6, "CODIGO DE ENVIO ", '0',1, 'C'); */
+
+            $pdf->Ln(15);     
+            $pdf->SetFont('Arial','B','12');
+            $y = $pdf->GetY();
+            $pdf->Cell(5, 7, "#", 'B', 0, 'L');
+            $pdf->Cell(58, 7, "Descripcion", 'B', 0, 'L');
+            $pdf->Cell(15, 7, "Pedido", 'B', 0, 'R'); 
+            $pdf->Cell(15, 7, "Enviado", 'B', 1, 'R');
+
+            $existeSegundaColumna = null;
+            $totalEnviado = 0;
+            $totalRecibido = 0;
+            $i = 1;
+            $j = 1;  
+            $k = 1;
+            $yForComments = $pdf->GetY();     
+
+            foreach($detalles as $detalle){      
+                $totalEnviado += $detalle['real_stock_in_store'];
+                $totalRecibido += $detalle['quantity'];
+
+                /*TITULOS PARA SEGUNDA COLUMNA*/
+                if($j > 30){
+                    $j = 1;                
+                    $yForComments = $pdf->GetY();
+                    $pdf->SetY($y);
+                    $pdf->SetFont('Arial','B','12');
+                    $pdf->Cell(98, 7, "", '', 0, 'L');/*Margin left*/
+                    $pdf->Cell(5, 7, "#", 'B', 0, 'L');
+                    $pdf->Cell(58, 7, "Descripcion", 'B', 0, 'L');
+                    $pdf->Cell(15, 7, "Pedido", 'B', 0, 'R'); 
+                    $pdf->Cell(15, 7, "Enviado", 'B', 1, 'R');                     
+                }
+
+                /* SEGUNDA COLUMNA */
+                if($k > 30){
+                    $existeSegundaColumna = true;
+                    $pdf->SetFont('Arial','','10');
+                    $pdf->Cell(98, 7, "", '', 0, 'L');/*Margin left*/
+                    $pdf->Cell(5, 5, $i, 'B', 0, 'C');
+                    $pdf->Cell(58, 5, utf8_decode($detalle['description']), 'B', 0, 'L');
+                    $pdf->Cell(15, 5, number_format($detalle['real_stock_in_store']), 'B', 0, 'R');
+                    $pdf->Cell(15, 5, number_format($detalle['quantity']), 'B', 1, 'R');      
+
+                /* PRIMER COLUMNA */
+                }else{               
+                    $pdf->SetFont('Arial','','10');
+                    $pdf->Cell(5, 5, $i, 'B', 0, 'C');
+                    $pdf->Cell(58, 5, utf8_decode($detalle['description']), 'B', 0, 'L');
+                    $pdf->Cell(15, 5, number_format($detalle['real_stock_in_store']), 'B', 0, 'R');
+                    $pdf->Cell(15, 5, number_format($detalle['quantity']), 'B', 1, 'R');
+                    $yForComments = $pdf->GetY();
+                }            
+                $i++;
+                $j++;
+                $k++;
+            }        
+            
+            /*TOTAL CHAROLAS*/
+            if(is_null($existeSegundaColumna)){
+                $pdf->SetFont('Arial','B','12');
+                $pdf->Cell(5, 5, '', '', 0, 'C');
+                $pdf->Cell(58, 5, 'TOTAL', '', 0, 'L');
+                $pdf->Cell(15, 5, number_format($totalEnviado), '', 0, 'R');
+                $pdf->Cell(15, 5, number_format($totalRecibido), '', 1, 'R');
+            }else{
+                $pdf->SetFont('Arial','B','12');            
+                $pdf->Cell(98, 7, "", '', 0, 'L');/*Margin left*/
+                $pdf->Cell(5, 5, '', '', 0, 'C');
+                $pdf->Cell(58, 5, 'TOTAL', '', 0, 'C');
+                $pdf->Cell(15, 5, number_format($totalEnviado), '', 0, 'R');
+                $pdf->Cell(15, 5, number_format($totalRecibido), '', 1, 'R');
+            }
+
+            $pdf->SetY($yForComments);
+            $pdf->Ln(5);       
+
+            $pdf->SetFont('Arial','B','8');
+            $pdf->Cell(85, 7, "Notas envio", 'B', 1, 'L');
+            $pdf->SetFont('Arial','','8');
+            $pdf->Multicell(85, 4,  utf8_decode($shipment->getComments()));        
+            
+            $pdf->SetY($yForComments);
+            $pdf->Ln(5);       
+
+            $pdf->SetFont('Arial','B','8');
+            $pdf->Cell(90, 7, "", '0', 0, 'L');
+            $pdf->Cell(85, 7, "Notas pedido", 'B', 1, 'L');
+            
+            $pdf->SetFont('Arial','','8');
+            $pdf->Cell(90, 7, "", '0', 0, 'L');
+            $pdf->Multicell(85, 4,  utf8_decode($shipmentData['store_request_comments']), '0', 1, 'L');        
+
+            $pdf->SetY(260);
+            $pdf->Cell(10, 4, "", '', 0, 'C');
+            $pdf->Cell(45, 4, "Enviado por", 'T', 0, 'C');
+            $pdf->Cell(20, 4, "", '', 0, 'C');
+            $pdf->Cell(45, 4, "Recibido por", 'T', 00, 'C');
+			$pdf->Cell(20, 4, "", '', 0, 'C');
+            $pdf->Cell(45, 4, "Entregado por", 'T', 1, 'C');
+
+            $pdf->Cell(10, 4, "", '', 0, 'C');
+            $pdf->Cell(45, 4, "Nombre y firma", '0', 0, 'C');
+            $pdf->Cell(20, 4, "", '', 0, 'C');
+            $pdf->Cell(45, 4, "Nombre y firma", '0', 0, 'C');
+			$pdf->Cell(20, 4, "", '', 0, 'C');
+            $pdf->Cell(45, 4, "Nombre y firma", '0', 1, 'C');
+        }
+       
+
+        if($createFile){
+            if(!is_dir(PATH_TEMP_DOCS."requisitions/")){
+                mkdir(PATH_TEMP_DOCS."requisitions/",0777,true);
+            }
+            $pdf->Output(PATH_TEMP_DOCS."requisitions/REQ-".$idShipment.".pdf","F");
+            $this->pathfFileCreated = PATH_TEMP_DOCS."requisitions/REQ-".$idShipment.".pdf";
+        }else{
+            $pdf->Output();
+            unlink(ROOT.'app/resources/docs/temp/barcodes/'.$shipment->getNumShipment().'.png');
+        }
+    }
+    
+    public function getPathFileCreated(){
+        return $this->pathfFileCreated;
+    }
+}

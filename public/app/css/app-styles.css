@@ -1,0 +1,45 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 6/03/2020, 12:59:15 PM
+    Author     : Usuario1
+*/
+
+
+.datatable_whit_filter_column   tfoot {
+    display: table-header-group;
+}
+
+.clear{
+    clear: both;
+}
+
+.font-size-12{
+    font-size: 12px;
+}
+
+.modal-wizard-specialOrder{
+   width: 80%;
+}
+
+.tooltip-inner.large {
+    width: 400px;
+    max-width: 400px;
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+   background-color: #e2f0fb;
+}
+
+.h_totals {text-align: right;}
+.h_totals h3{margin:0px;color: #666666;}
+.h_totals h2{margin:0px;margin-top: 5px;}
+.h_totals h4{margin:0px;margin-top: 5px;color: #666666;}
+
+.alert a {
+  color: #000 !important;
+  text-decoration: underline;
+}
