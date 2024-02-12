@@ -2,9 +2,9 @@
 
     define('ROOT',$_SERVER["DOCUMENT_ROOT"]."/");
 
-    define('ROOT_HOST',"http://".$_SERVER['HTTP_HOST'].'');
+    define('ROOT_HOST',"https://".$_SERVER['HTTP_HOST'].'');
 
-    define('PATH_IMG',"http://".$_SERVER['HTTP_HOST'].'/public/img');
+    define('PATH_IMG',"https://".$_SERVER['HTTP_HOST'].'/public/img');
 
     define('PATH_IMG_PRODUCTS',ROOT."/public/img/products/");
 

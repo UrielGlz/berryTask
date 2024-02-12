@@ -268,6 +268,9 @@ class ProjectAjax extends ProjectRepository
                     . "</td> "
                     //."<td><button id='{$detalle['id']}' type='button' class='btn btn-default btn-sm checkbox-toggle'><i class='fa fa-square-o'></i></button></td>"
                     . "<td class='text-center'>" . $detalle['task_name'] . "</td> "
+
+                    . "<td class='text-center'>" . $detalle['customer_name'] . "</td> "
+                    
                     . "<td class='text-center'>" . $detalle['format_due_date'] . "</td> "
 
                     . "<td class='text-center'><span style='color:{$detalle['color_category']}'>" . $detalle['category_name'] . "</span></td> "

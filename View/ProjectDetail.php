@@ -19,7 +19,9 @@
                 <?php echo $_translator->_getTranslation('Inicio') ?>
             </a></li>
 
-        <li><a href="<?php echo ROOT_HOST ?>/Controller/Project.php?action=list"><?php echo $_translator->_getTranslation('Lista de proyectos') ?></a></li>
+        <li><a href="<?php echo ROOT_HOST ?>/Controller/Project.php?action=list">
+                <?php echo $_translator->_getTranslation('Lista de proyectos') ?>
+            </a></li>
 
         <li class="active">
             <?php echo $_translator->_getTranslation('Editar Proyecto'); ?>
@@ -51,7 +53,8 @@
                         <i class='fa-fw fa fa-bookmark'></i>
                         <a
                             href="<?php echo ROOT_HOST ?>/Controller/Project.php?action=edit&id=<?php echo $_GET['id'] ?>">
-                            <?php echo $_brandData['name']; ?></a>
+                            <?php echo $_brandData['name']; ?>
+                        </a>
 
                     </h3>
 
@@ -123,60 +126,60 @@
                                             </thead>
                                             <tbody id="tbody_resumenP">
                                                 <?php
-                                                if (isset($_brandData)) {?>
+                                                if (isset($_brandData)) { ?>
 
-                                                        <tr>
-                                                            <td>
-                                                                <?php echo $_translator->_getTranslation('Total de tareas') ?>
-                                                            </td>
-                                                            <td>
-                                                                <span class="label label-default">
-                                                                    <?php echo $_brandData['total_tareas'] ?>
-                                                                </span>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <?php echo $_translator->_getTranslation('Tareas finalizadas') ?>
-                                                            </td>
-                                                            <td><span class="label label-success">
-                                                                    <?php echo $_brandData['completas'] ?>
-                                                                </span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <?php echo $_translator->_getTranslation('Tareas en proceso') ?>
-                                                            </td>
-                                                            <td><span class="label label-info">
-                                                                    <?php echo $_brandData['proceso'] ?>
-                                                                </span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <?php echo $_translator->_getTranslation('Tareas retrazadas') ?>
-                                                            </td>
-                                                            <td><span class="label label-danger">
-                                                                    <?php echo $_brandData['retrazo'] ?>
-                                                                </span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <?php echo $_translator->_getTranslation('Tareas en riesgo') ?>
-                                                            </td>
-                                                            <td><span class="label label-warning">
-                                                                    <?php echo $_brandData['riesgo'] ?>
-                                                                </span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <?php echo $_translator->_getTranslation('Tareas nuevas') ?>
-                                                            </td>
-                                                            <td><span class="label label-primary">
-                                                                    <?php echo $_brandData['nueva'] ?>
-                                                                </span></td>
-                                                        </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <?php echo $_translator->_getTranslation('Total de tareas') ?>
+                                                        </td>
+                                                        <td>
+                                                            <span class="label label-default">
+                                                                <?php echo $_brandData['total_tareas'] ?>
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <?php echo $_translator->_getTranslation('Tareas finalizadas') ?>
+                                                        </td>
+                                                        <td><span class="label label-success">
+                                                                <?php echo $_brandData['completas'] ?>
+                                                            </span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <?php echo $_translator->_getTranslation('Tareas en proceso') ?>
+                                                        </td>
+                                                        <td><span class="label label-info">
+                                                                <?php echo $_brandData['proceso'] ?>
+                                                            </span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <?php echo $_translator->_getTranslation('Tareas retrazadas') ?>
+                                                        </td>
+                                                        <td><span class="label label-danger">
+                                                                <?php echo $_brandData['retrazo'] ?>
+                                                            </span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <?php echo $_translator->_getTranslation('Tareas en riesgo') ?>
+                                                        </td>
+                                                        <td><span class="label label-warning">
+                                                                <?php echo $_brandData['riesgo'] ?>
+                                                            </span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <?php echo $_translator->_getTranslation('Tareas nuevas') ?>
+                                                        </td>
+                                                        <td><span class="label label-primary">
+                                                                <?php echo $_brandData['nueva'] ?>
+                                                            </span></td>
+                                                    </tr>
 
-                                                    <?php 
+                                                <?php
                                                 } ?>
 
                                             </tbody>
@@ -222,6 +225,7 @@
                                             <tr>
                                                 <th></th>
                                                 <th>Descipción de la tarea</th>
+                                                <th>Cliente</th>
                                                 <th>Fecha vencimiento</th>
                                                 <th>Categoria</th>
                                                 <th>Prioridad</th>
@@ -301,10 +305,13 @@
                                     <!-- Botones de subtarea, actualizar , comentarios -->
                                     <div class="form-group pull-left">
 
-                                        <button type="button" class="btn btn-defaul btn-sm hide" id="btnCloseTask"><i
+                                        <button type="button" class="btn btn-primary btn-sm hide" id="btnCloseTask"><i
                                                 class="fa fa-check"></i> Marcar como finalizada</button>
                                     </div>
                                     <div class="form-group pull-right">
+                                    <button type="button" class="btn btn-info btn-sm hide" id="_btnStartTask"><i
+                                                class="fa fa-play"></i>
+                                            Iniciar</button>
                                         <button type="button" class="btn bg-maroon btn-sm _addTask" id="parent_task"><i
                                                 class="fa fa-copy"></i>
                                             Subtarea</button>
@@ -348,7 +355,9 @@
                                             $listPriorities = $form->getListUsers();
 
                                             foreach ($listPriorities as $key => $value) { ?>
-                                                <option value="<?php echo $key ?>"><?php echo $value ?></option>
+                                                <option value="<?php echo $key ?>">
+                                                    <?php echo $value ?>
+                                                </option>
                                             <?php }
                                             ?>
                                         </select>
@@ -367,7 +376,9 @@
                                             $listPriorities = $form->getListCategoryTask();
 
                                             foreach ($listPriorities as $key => $value) { ?>
-                                                <option value="<?php echo $key ?>"><?php echo $value ?></option>
+                                                <option value="<?php echo $key ?>">
+                                                    <?php echo $value ?>
+                                                </option>
                                             <?php }
                                             ?>
                                         </select>
@@ -382,7 +393,9 @@
                                             $listCustomers = $form->getListCustomer();
 
                                             foreach ($listCustomers as $key => $value) { ?>
-                                                <option value="<?php echo $key ?>"><?php echo $value ?></option>
+                                                <option value="<?php echo $key ?>">
+                                                    <?php echo $value ?>
+                                                </option>
                                             <?php }
                                             ?>
                                         </select>
@@ -395,7 +408,9 @@
                                             $listPriorities = $form->getListPrioritie();
 
                                             foreach ($listPriorities as $key => $value) { ?>
-                                                <option value="<?php echo $key ?>"><?php echo $value ?></option>
+                                                <option value="<?php echo $key ?>">
+                                                    <?php echo $value ?>
+                                                </option>
                                             <?php }
                                             ?>
                                         </select>
@@ -409,7 +424,9 @@
                                             $listPriorities = $form->getListStatus();
 
                                             foreach ($listPriorities as $key => $value) { ?>
-                                                <option value="<?php echo $key ?>"><?php echo $value ?></option>
+                                                <option value="<?php echo $key ?>">
+                                                    <?php echo $value ?>
+                                                </option>
                                             <?php }
                                             ?>
                                         </select>
@@ -421,10 +438,24 @@
                                         <textarea class="form-control" id="description" name="description" rows="7"
                                             placeholder="Descripción ..."></textarea>
                                     </div>
+
+                                    <div id="drop-area" class="active">
+                                        <div class="form-group">
+                                            <!-- <label class="attachments control-label col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                                Comprobante deposito:</label> -->
+
+
+                                            <input type="file" id="attachement_file" name="attachement_file"
+                                                class="form-control fileinput upload" title="Adjuntos"
+                                                data-show-preview="" data-show-upload="">
+                                            <p>Arrastra y suelta archivos aquí o haz clic para seleccionar.</p>
+                                        </div>
+                                    </div>
+<!-- 
                                     <div class="form-group">
                                         <input type="file" id="attachement_file" name="attachement_file"
                                             class="form-control upload fileinput" />
-                                    </div>
+                                    </div> -->
                                     <!-- Listado de archivos por tarea -->
                                     <div class="form-group" id="ul_Listfiles">
 
@@ -487,7 +518,21 @@
 
 
 <style>
+#drop-area, #drop-area2 {
+        border: 2px dashed #ccc;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+    }
 
+    #drop-area.active, #drop-area2.active {
+        border-color: #2196F3;
+    }
+
+    #drop-area.success, #drop-area2.success {
+        background-color: #C8E6C9;
+        /* Color de fondo para indicar éxito */
+    }
 </style>
 <?php
 include ROOT . "/View/Modal/addTask.php";
@@ -539,9 +584,9 @@ include ROOT . "/View/Modal/addFile.php";
 
     $(".fileinput").fileinput({
 
-        allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg', 'pdf'],
+        allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg', 'pdf','ppt','pptx','doc','docx','xlsx','txt','zip','bmp','jpeg','jpg'],
 
-        maxFileSize: 10000,
+        maxFileSize: 1000000,
 
         showUpload: false
 
@@ -559,6 +604,7 @@ include ROOT . "/View/Modal/addFile.php";
         $("#div_detailsTask").addClass('hide');
     });
     $("#_btnStartTask").on("click", function () {
+       
         startTask();
     });
     $("#btnCloseTask").on("click", function () {
@@ -614,5 +660,39 @@ include ROOT . "/View/Modal/addFile.php";
     });
 
 
+    const dropArea = $('#drop-area');
+    const attachmentsInput = $('#attachement_file');
+
+        // Evitar comportamiento predeterminado de arrastrar y soltar
+        dropArea.on('dragenter dragover dragleave drop', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        });
+
+        // Resaltar visualmente al entrar al área
+        dropArea.on('dragenter', function() {
+            dropArea.addClass('active');
+        });
+
+        // Restaurar estilos al salir del área
+        dropArea.on('dragleave', function() {
+            dropArea.removeClass('active success');
+        });
+
+        // Manejar la carga de archivos al soltar
+        dropArea.on('drop', function(e) {
+            e.preventDefault();
+
+            const files = e.originalEvent.dataTransfer.files;
+
+            // Verificar si se soltó al menos un archivo
+            if (files.length > 0) {
+                // Establecer el archivo en el input
+                attachmentsInput.prop('files', files);
+
+                // Actualizar contenido y estilos para indicar éxito
+                dropArea.addClass('success').append(`<p>Archivo cargado: ${files[0].name}</p>`);
+            }
+        });
 
 </script>

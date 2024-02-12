@@ -19,7 +19,7 @@ class FileManagement  {
             
         
         'task'=>array(
-            'allowedExtensions'=>array('pdf','doc','docx','xls','xlsx','jpg','jpeg','png','gif','tiff','bmp'),
+            'allowedExtensions'=>array('ppt','pptx','txt','zip','pdf','doc','docx','xls','xlsx','jpg','jpeg','png','gif','tiff','bmp'),
             'maxFileSizeAllowed'=>1000000,
             'pathToSave'=>PATH_TASK_ATTACHMENT,
             'alt'=>'/app/resources/docs/task_attachments/'),

@@ -70,6 +70,7 @@ $(function () {
 });
 
 function deleteFile(element) {
+    
     var fileDelete = $(element).data('filedelete');
     var uuid = $(element).data('uuid');
     $.confirm({
@@ -5039,9 +5040,17 @@ function getTaskById(id) {
             if (data.taskDetail[0]['status'] !== '5' ) {
                 $("#btnCloseTask").removeClass('hide');
             }
+            if (data.taskDetail[0]['status'] === '1' ) {//UG Nueva tarea y es necesario mostrar el boton de iniciar tarea
+                $("#_btnStartTask").removeClass('hide');
+            }else{
+                $("#_btnStartTask").addClass('hide');
+
+            }
             
             if (data.ulFiles) {
                 $("#ul_Listfiles").html(data.ulFiles);
+                $("._deleteFile").on("click", function () { deleteFile(this); });
+
             }
             $("._generalButton").removeClass('hide');
 
@@ -5084,6 +5093,7 @@ function closeTask(id) {
 
 }
 function startTask() {
+    var id = $('form[name=task] #task_id').val();
     var options = $('form[name=task]').serializeArray();
 
     options.push({ name: 'status', value: '2' });// Status = en proceso
@@ -5102,6 +5112,7 @@ function startTask() {
             //setTimeout(, 2000);
             $("._groupBtn").addClass('hide');
             getTaskByProject();
+            getTaskById(id)
 
         } else {
             $('.flashmessenger-add_task').html(data.message);
@@ -5216,7 +5227,7 @@ function Table(table) {
             "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
             "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
             "sInfoPostFix": "",
-            "sSearch": "Buscar:",
+            "sSearch": "Busqueda:",
             "sUrl": "",
             "sInfoThousands": ",",
             "sLoadingRecords": "Cargando...",
@@ -5239,7 +5250,7 @@ function Table(table) {
         "lengthMenu": [[10, 20, 30, -1], [10, 20, 30, "Todos"]],
         paginate: false,
         lengthChange: false,
-        filter: false,
+        filter: true,
         buttons: [{ extend: 'excel', text: 'Descargar en excel' }]
 
 

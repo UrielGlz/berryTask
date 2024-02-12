@@ -309,10 +309,10 @@ class TaskRepository extends EntityRepository
             . ",p.name prioritie_name,p.color, "
             . "(select count(t_.id) from tasks t_ where t_.parent_task_id = t.id) as parent, "
             . "	IFNULL((select COUNT(IFNULL(t_.id,0)) from tasks t_ where t_.status = 5 AND (t_.id = t.id OR t_.parent_task_id = t.id)) /  ((1 + (select COUNT(IFNULL(_t.id,0))  from tasks _t WHERE  _t.parent_task_id = t.id )) )  * 100 ,0) as progreso_task "
-            . ",ct.name as category_name,ct.color as color_category "
+            . ",ct.name as category_name,ct.color as color_category , fxGetCustomerName(t.customer_id) as customer_name "
             . " FROM $this->table t LEFT JOIN priorities p on t.prioritie_id = p.id LEFT JOIN category_task ct on t.category_id = ct.id where project_id = '$project_id' $filterTask  $filterUser order by due_date asc";
 
-         // var_dump($query);exit;
+          //var_dump($query);exit;
         $result = $this->query($query);
 
         if ($result->num_rows > 0) {
@@ -324,7 +324,7 @@ class TaskRepository extends EntityRepository
                 . ",p.name prioritie_name,p.color, "
                 . "(select count(t_.id) from tasks t_ where t_.parent_task_id = t.id) as parent, "
                 . "	IFNULL((select COUNT(IFNULL(t_.id,0)) from tasks t_ where t_.status = 5 AND (t_.id = t.id OR t_.parent_task_id = t.id)) /  ((1 + (select COUNT(IFNULL(_t.id,0))  from tasks _t WHERE  _t.parent_task_id = t.id )) )  * 100 ,0) as progreso_task "
-                ." ,ct.name as category_name,ct.color as color_category "
+                ." ,ct.name as category_name,ct.color as color_category,  fxGetCustomerName(t.customer_id) as customer_name "
                 . " FROM $this->table t LEFT JOIN priorities p on t.prioritie_id = p.id LEFT JOIN category_task ct on t.category_id = ct.id  where project_id = '$project_id' AND parent_task_id = 0  $filterUser order by due_date asc";
 
             //var_dump($query);exit;
